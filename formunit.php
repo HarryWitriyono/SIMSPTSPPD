@@ -10,6 +10,7 @@
 <body>
   
 	<div class="container">
+	<h2>Master Tabel Unit Pengguna</h2>	
 	<form method="post">
 	  <div class="form-group row">
 		<label for="namaunit" class="col-4 col-form-label">Nama Unit</label> 
