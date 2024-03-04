@@ -4,7 +4,15 @@ xmlns:w="urn:schemas-microsoft-com:office:word"
 xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
 xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
 xmlns="http://www.w3.org/TR/REC-html40">
-
+<?php
+	include('koneksi.db.php');
+	if (isset($_GET['idsurat'])){
+		$idsurat=filter_var($_GET['idsurat'],FILTER_SANITIZE_STRING);
+		$sql="SELECT h.*, p.*, g.* FROM headersurat h INNER JOIN pesertakegiatan pk ON h.idSurat = pk.idSurat INNER JOIN pengguna p ON p.id_login=pk.id_login  INNER JOIN golongan g ON g.idPanGol=pk.idPanGol WHERE idsurat='".$idsurat."'";
+		$q=mysqli_query($koneksi, $sql);
+		$r=mysqli_fetch_array($q);
+	} 
+	?>
 <head>
 <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
 <meta name=ProgId content=Word.Document>
@@ -1325,7 +1333,8 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   mso-bidi-font-size:11.0pt'><span style='mso-list:Ignore'>a.<span
   style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
   lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;letter-spacing:
-  -.25pt'><input style="font-size: 12px; font-family: time new romance; width: 100px; " name="PangkatGolGaji" type="text" class="form-control"></span><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
+  -.25pt'><input style="font-size: 12px; font-family: time new romance; width: 50px; " id="Pangkat" name="Pangkat" type="text" class="form-control" value="<?php echo $r ['Pangkat']?>">
+  <input style="font-size: 12px; font-family: time new romance; width: 50px; " id="Golongan" name="Golongan" type="text" class="form-control" value="<?php echo $r ['Golongan']?>"></span><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt'><o:p></o:p></span></p>
   </td>
  </tr>
@@ -1376,7 +1385,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   mso-bidi-font-size:11.0pt'><span style='mso-list:Ignore'>b.<span
   style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
   lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;letter-spacing:
-  -.25pt'><input style="font-size: 12px; font-family: time new romance; width: 100px; " name="Jabatan" type="text" class="form-control"></span><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
+  -.25pt'><input style="font-size: 12px; font-family: time new romance; width: 100px; " id="Jabatan" name="Jabatan" type="text" class="form-control" value="<?php echo $r ['Pangkat']?>"></span><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt'><o:p></o:p></span></p>
   </td>
  </tr>
@@ -1408,7 +1417,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   mso-bidi-font-size:11.0pt'><span style='mso-list:Ignore'>c.<span
   style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
   lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;letter-spacing:
-  -.25pt'><input style="font-size: 12px; font-family: time new romance; width: 100px; " name="TingkatPerjalanan" type="text" class="form-control"></span><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
+  -.25pt'><input style="font-size: 12px; font-family: time new romance; width: 100px; " id="NamaTingkat" name="NamaTingkat" type="text" class="form-control" value="<?php echo $r ['NamaTingkat']?>"></span><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt'><o:p></o:p></span></p>
   </td>
  </tr>
@@ -1436,7 +1445,8 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   padding:0cm 0cm 0cm 0cm;height:89.25pt'>
   <p class=TableParagraph><span class=SpellE><span lang=id style='font-size:
   10.0pt;mso-bidi-font-size:11.0pt;font-family:"Times New Roman",serif;
-  mso-hansi-font-family:Tahoma;mso-bidi-font-family:Tahoma'>&emsp;&emsp;<textarea style="font-size: 12px; font-family; time new romance; width: 320px;" name="Maksud" class="form-control"></textarea></span></span><span
+  mso-hansi-font-family:Tahoma;mso-bidi-font-family:Tahoma'>&emsp;&emsp;<textarea style="font-size: 12px; font-family; time new romance; width: 320px;" id="AcaraKegiatan" name="AcaraKegiatan" class="form-control">
+  <?php echo $r ['AcaraKegiatan']?></textarea></span></span><span
   lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:"Times New Roman",serif;
   mso-hansi-font-family:Tahoma;mso-bidi-font-family:Tahoma'><o:p></o:p></span></p>
   </td>
@@ -1467,7 +1477,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   padding:0cm 0cm 0cm 0cm;height:16.35pt'>
   <p class=TableParagraph><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt;font-family:"Times New Roman",serif;mso-hansi-font-family:Tahoma;
-  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<input style="font-size: 12px; font-family: time new romance; width: 100px; " name="AlatAngkutan" type="text" class="form-control"><o:p></o:p></span></p>
+  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<input style="font-size: 12px; font-family: time new romance; width: 100px; " id="AlatAngkutan" name="AlatAngkutan" type="text" class="form-control" value="<?php echo $r ['AlatAngkutan']?>"><o:p></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:8;height:18.0pt'>
@@ -1502,13 +1512,13 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   padding:0cm 0cm 0cm 0cm;height:18.0pt'>
   <p class=TableParagraph><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt;font-family:"Times New Roman",serif;mso-hansi-font-family:Tahoma;
-  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<input style="font-size: 12px; font-family: time new romance; width: 100px; " name="TempatBerangkat" type="text" class="form-control"><o:p></o:p></span></p>
+  mso-bidi-font-family:Tahoma'>&emsp;&emsp;Bengkulu<o:p></o:p></span></p>
   <p class=TableParagraph><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt;font-family:"Times New Roman",serif;mso-hansi-font-family:Tahoma;
   mso-bidi-font-family:Tahoma'><o:p>&nbsp;</o:p></span></p>
   <p class=TableParagraph><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt;font-family:"Times New Roman",serif;mso-hansi-font-family:Tahoma;
-  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<input style="font-size: 12px; font-family: time new romance; width: 100px; " name="TempatTujuan" type="text" class="form-control"><o:p></o:p></span></p>
+  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<input style="font-size: 12px; font-family: time new romance; width: 100px; " id="TempatKegiatan" name="TempatKegiatan" type="text" class="form-control" value="<?php echo $r ['TempatKegiatan']?>"><o:p></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:9;height:25.05pt'>
@@ -1561,7 +1571,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   <p class=TableParagraph style='margin-top:1.4pt;margin-right:0cm;margin-bottom:
   0cm;margin-left:7.9pt;margin-bottom:.0001pt'><span lang=id style='font-size:
   10.0pt;mso-bidi-font-size:11.0pt;letter-spacing:-.25pt'>a.</span><span
-  lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt'><o:p></o:p></span></p>
+  lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt'><o:p> <input style="font-size: 12px; font-family: time new romance; width: 100px; " id="LamaPerjalanan" name="LamaPerjalanan" type="text" class="form-control" value="<?php echo $r ['Pangkat']?>"></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:11;height:14.85pt'>
@@ -1585,7 +1595,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   <p class=TableParagraph style='margin-top:1.4pt;margin-right:0cm;margin-bottom:
   0cm;margin-left:7.9pt;margin-bottom:.0001pt'><span lang=id style='font-size:
   10.0pt;mso-bidi-font-size:11.0pt;letter-spacing:-.25pt'>b.</span><span
-  lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt'><o:p></o:p></span></p>
+  lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt'><o:p> <input style="font-size: 12px; font-family: time new romance; width: 100px; " id="TanggalAwal" name="TanggalAwal" type="date" class="form-control" value="<?php echo $r ['TanggalAwal']?>"></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:12;height:15.1pt'>
@@ -1612,7 +1622,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   <p class=TableParagraph style='margin-top:1.35pt;margin-right:0cm;margin-bottom:
   0cm;margin-left:7.9pt;margin-bottom:.0001pt'><span lang=id style='font-size:
   10.0pt;mso-bidi-font-size:11.0pt;letter-spacing:-.25pt'>c.</span><span
-  lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt'><o:p></o:p></span></p>
+  lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt'><o:p> <input style="font-size: 12px; font-family: time new romance; width: 100px; " id="TanggalAkhir" name="TanggalAkhir" type="date" class="form-control" value="<?php echo $r ['TanggalAkhir']?>"></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:13;height:14.55pt'>
@@ -1640,7 +1650,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   padding:0cm 0cm 0cm 0cm;height:14.55pt'>
   <p class=TableParagraph><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt;font-family:"Times New Roman",serif;mso-hansi-font-family:Tahoma;
-  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<input style="font-size: 12px; font-family: time new romance; width: 100px; " name="pangkatgolgaji" type="text" class="form-control"><o:p></o:p></span></p>
+  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<o:p></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:14;height:12.85pt'>
@@ -1692,7 +1702,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   0cm;margin-left:7.9pt;margin-bottom:.0001pt;line-height:11.75pt;mso-line-height-rule:
   exactly'><span lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;
   letter-spacing:-.25pt'>a.</span><span lang=id style='font-size:10.0pt;
-  mso-bidi-font-size:11.0pt'><o:p></o:p></span></p>
+  mso-bidi-font-size:11.0pt'><o:p> <input style="font-size: 12px; font-family: time new romance; width: 100px; " id="namaunit" name="namaunit" type="text" class="form-control" value="<?php echo $r ['namaunit']?>"></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:16;height:13.45pt'>
@@ -1719,7 +1729,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   0cm;margin-left:7.9pt;margin-bottom:.0001pt;line-height:11.8pt;mso-line-height-rule:
   exactly'><span lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;
   letter-spacing:-.25pt'>b.</span><span lang=id style='font-size:10.0pt;
-  mso-bidi-font-size:11.0pt'><o:p></o:p></span></p>
+  mso-bidi-font-size:11.0pt'><o:p> </o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:17;mso-yfti-lastrow:yes;height:15.75pt'>
@@ -1747,7 +1757,7 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   padding:0cm 0cm 0cm 0cm;height:15.75pt'>
   <p class=TableParagraph><span lang=id style='font-size:10.0pt;mso-bidi-font-size:
   11.0pt;font-family:"Times New Roman",serif;mso-hansi-font-family:Tahoma;
-  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<input style="font-size: 12px; font-family: time new romance; width: 100px; " name="pangkatgolgaji" type="text" class="form-control"><o:p></o:p></span></p>
+  mso-bidi-font-family:Tahoma'>&emsp;&emsp;<o:p></o:p></span></p>
   </td>
  </tr>
 </table>
@@ -1789,8 +1799,8 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
   <td width=153 valign=top style='width:114.95pt;padding:0cm 0cm 0cm 0cm;
   height:17.2pt'>
   <p class=TableParagraph style='margin-top:1.5pt'><span lang=id
-  style='font-size:10.0pt;mso-bidi-font-size:11.0pt'><input style="font-size: 12px; font-family: time new romance; width: 25px;" name="date" type="text" class="form-control"> September<span
-  style='letter-spacing:2.4pt'> </span><span style='letter-spacing:-.2pt'>2023</span><o:p></o:p></span></p>
+  style='font-size:10.0pt;mso-bidi-font-size:11.0pt'><input style="font-size: 12px; font-family: time new romance; width: 100px; " id="TglSurat" name="TglSurat" type="date" class="form-control" value="<?php echo $r ['Pangkat']?>"><span
+  style='letter-spacing:2.4pt'> </span><span style='letter-spacing:-.2pt'></span><o:p></o:p></span></p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:2;mso-yfti-lastrow:yes;height:14.65pt'>
@@ -1818,42 +1828,48 @@ mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
 "Palladio Uralic";mso-bidi-font-family:"Palladio Uralic"'><o:p>&nbsp;</o:p></span></p>
 
 <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
- style='margin-left:354.95pt;border-collapse:collapse;mso-table-layout-alt:
+ style='margin-left:350pt;border-collapse:collapse;mso-table-layout-alt:
  fixed;mso-yfti-tbllook:480;mso-padding-alt:0cm 0cm 0cm 0cm'>
  <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:12.0pt'>
   <td width=117 valign=top style='width:87.85pt;padding:0cm 0cm 0cm 0cm;
   height:12.0pt'>
+  <center>
   <p class=TableParagraph style='margin-left:5.5pt;line-height:11.0pt;
   mso-line-height-rule:exactly;tab-stops:dotted 81.15pt'><b style='mso-bidi-font-weight:
   normal'><u><span lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;
   font-family:"Liberation Sans Narrow",sans-serif;mso-hansi-font-family:Tahoma;
   letter-spacing:-.5pt'>(</span></u></b><b style='mso-bidi-font-weight:normal'><span
   lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;font-family:"Liberation Sans Narrow",sans-serif;
-  mso-hansi-font-family:Tahoma'><span style='mso-tab-count:1 dotted'><input style="font-size: 12px; font-family: time new romance; width: 100px; " name="text" type="text" class="form-control"></span><u><span
+  mso-hansi-font-family:Tahoma'><span style='mso-tab-count:1 dotted'>Saipul, S. Sos.</span><u><span
   style='letter-spacing:-.5pt'>)</span></u><o:p></o:p></span></b></p>
+  </center>
   </td>
  </tr>
  <tr style='mso-yfti-irow:1;height:12.7pt'>
   <td width=117 valign=top style='width:87.85pt;padding:0cm 0cm 0cm 0cm;
   height:12.7pt'>
+  <center>
   <p class=TableParagraph style='margin-top:.5pt;margin-right:0cm;margin-bottom:
   0cm;margin-left:3.9pt;margin-bottom:.0001pt;line-height:11.2pt;mso-line-height-rule:
   exactly'><span lang=id style='font-size:10.0pt;mso-bidi-font-size:11.0pt;
   font-family:"Liberation Sans Narrow",sans-serif;mso-hansi-font-family:Tahoma'>Pembina<span
   style='letter-spacing:-.5pt'> </span>Utama<span style='letter-spacing:-.55pt'>
   </span><span style='letter-spacing:-.2pt'>Muda</span><o:p></o:p></span></p>
+  </center>
   </td>
  </tr>
  <tr style='mso-yfti-irow:2;mso-yfti-lastrow:yes;height:9.95pt'>
-  <td width=117 valign=top style='width:87.85pt;padding:0cm 0cm 0cm 0cm;
+  <td width=150 valign=top style='width:87.85pt;padding:0cm 0cm 0cm 0cm;
   height:9.95pt'>
-  <p class=TableParagraph style='margin-top:.7pt;margin-right:0cm;margin-bottom:
-  0cm;margin-left:2.5pt;margin-bottom:.0001pt;line-height:8.25pt;mso-line-height-rule:
+  <center>
+  <p class=TableParagraph style='margin-top:.10pt;margin-right:0cm;margin-bottom:
+  0cm;margin-left:0pt;margin-bottom:.0001pt;line-height:8.25pt;mso-line-height-rule:
   exactly'><span lang=id style='font-size:8.0pt;mso-bidi-font-size:11.0pt;
   font-family:"Arial",sans-serif;mso-hansi-font-family:Tahoma;mso-bidi-font-family:
-  Tahoma;letter-spacing:-.2pt;mso-font-width:105%'>NIP. titik</span><span
+  Tahoma;letter-spacing:-.2pt;mso-font-width:100%'>NIP. 197207091992021001</span><span
   lang=id style='font-size:8.0pt;mso-bidi-font-size:11.0pt;font-family:"Arial",sans-serif;
   mso-hansi-font-family:Tahoma;mso-bidi-font-family:Tahoma'><o:p></o:p></span></p>
+  </center>
   </td>
  </tr>
 </table>
