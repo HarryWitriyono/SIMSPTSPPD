@@ -12,6 +12,10 @@ include('koneksi.db.php');
 <body>
 <div class="container">
 	<h2>Master Tabel Pengguna</h2>	
+	<?php
+	$berwenang=['7'];
+	include('ceklevelpengguna.php');
+	?>
 	<form method="post">
 	<div class="form-group row">
     <label for="nik" class="col-4 col-form-label">NIK</label> 
@@ -47,6 +51,7 @@ include('koneksi.db.php');
     <label for="Golongan" class="col-4 col-form-label">Golongan</label> 
     <div class="col-8">
       <select id="Golongan" name="Golongan" class="custom-select">
+	  <option value="-">-</option>
 	  <?php $sqll="select * from Golongan";
 		$ql=mysqli_query($koneksi,$sqll);
 		$rl=mysqli_fetch_array($ql);
@@ -62,6 +67,7 @@ include('koneksi.db.php');
     <label for="idlevel" class="col-4 col-form-label">Level Pengguna</label> 
     <div class="col-8">
       <select id="idlevel" name="idlevel" class="custom-select">
+	   <option value="-">-</option>
 		<?php $sqll="select * from level";
 		$ql=mysqli_query($koneksi,$sqll);
 		$rl=mysqli_fetch_array($ql);
@@ -77,6 +83,7 @@ include('koneksi.db.php');
     <label for="idunit" class="col-4 col-form-label">Unit Pengguna</label> 
     <div class="col-8">
       <select id="idunit" name="idunit" class="custom-select">
+	    <option value="-">-</option>
 	  <?php $sqll="select * from unit";
 		$ql=mysqli_query($koneksi,$sqll);
 		$rl=mysqli_fetch_array($ql);
@@ -85,6 +92,15 @@ include('koneksi.db.php');
         <option value="<?php echo $rl['idunit'];?>"><?php echo $rl['namaunit'];?></option>
 		<?php } while($rl=mysqli_fetch_array($ql));
 		?>
+      </select>
+    </div>
+  </div> 
+  <div class="form-group row">
+    <label for="Status" class="col-4 col-form-label">Status Pengguna</label> 
+    <div class="col-8">
+      <select id="Status" name="Status" class="custom-select">
+	    <option value="Tidak Aktif" selected>Tidak Aktif</option>
+		<option value="Aktif">Aktif</option>
       </select>
     </div>
   </div> 
@@ -104,9 +120,9 @@ include('koneksi.db.php');
 			$Golongan=filter_var($_POST['Golongan'],FILTER_SANITIZE_STRING);
 			$idlevel=filter_var($_POST['idlevel'],FILTER_SANITIZE_STRING);
 			$idunit=filter_var($_POST['idunit'],FILTER_SANITIZE_STRING);
-			$username=filter_var($_POST['username'],FILTER_SANITIZE_STRING);
-			$sql="INSERT INTO `pengguna`(`nik`, `username`, `nama_lengkap`, `password`, `no_pegawai`, `Golongan`, `idlevel`, `idunit`) VALUES ('".$nik."','".$username."','".$nama_lengkap."','".$password."','".$no_pegawai."','".$Golongan."','".$idlevel."','".$idunit."')";
-			$q=mysqli_query($koneksi,$sql); //echo $sql;
+			$Status=filter_var($_POST['Status'],FILTER_SANITIZE_STRING);
+			$sql="INSERT INTO `pengguna`(`nik`, `username`, `nama_lengkap`, `password`, `no_pegawai`, `Golongan`, `idlevel`, `idunit`,`Status`) VALUES ('".$nik."','".$username."','".$nama_lengkap."','".$password."','".$no_pegawai."','".$Golongan."','".$idlevel."','".$idunit."','".$Status."')";
+			$q=mysqli_query($koneksi,$sql); 
 			
 			if ($q){
 				echo '<div class="alert alert-success alert-dismissible">
@@ -127,7 +143,7 @@ include('koneksi.db.php');
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>ID pengguna</th>
+        <th>No.</th>
 		<th>Username</th>
         <th>Nama pengguna</th>
 		<th>Nik pengguna</th>
@@ -151,7 +167,7 @@ include('koneksi.db.php');
 		do {
 	?>
       <tr>
-        <td><?php echo $r['id_login'];?></td>
+        <td><?php @$nmr++;echo $nmr;?></td>
         <td><?php echo $r['username'];?></td>
 		<td><?php echo $r['nama_lengkap'];?></td>
 		<td><?php echo $r['nik'];?></td>
