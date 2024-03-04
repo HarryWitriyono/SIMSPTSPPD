@@ -3,7 +3,7 @@ include('koneksi.db.php');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Form pengguna</title>
+  <title>Form Golongan</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,7 +11,7 @@ include('koneksi.db.php');
 </head>
 <body>
 <div class="container">
-  <h2>Master Tabel Pengguna</h2>
+  <h2>Master Tabel Golongan</h2>
   <form method="post">
   <div class="form-group row">
     <label for="Golongan" class="col-4 col-form-label">Golongan</label> 
@@ -25,6 +25,7 @@ include('koneksi.db.php');
       <input id="Pangkat" name="Pangkat" type="text" class="form-control">
     </div>
   </div> 
+  <br>
   <div class="form-group row">
     <div class="offset-4 col-8">
       <button name="submit" type="submit" class="btn btn-primary">Simpan Rekord Baru</button>
@@ -65,7 +66,7 @@ if (isset($_POST['submit'])) {
     </thead>
     <tbody>
         <?php
-        $sqlg="select * from Golongan";
+        $sqlg="select * from golongan";
         $qg=mysqli_query($koneksi,$sqlg);
         $rg=mysqli_fetch_array($qg);
         if (!empty($rg)) {
@@ -77,7 +78,7 @@ if (isset($_POST['submit'])) {
         <td><?php echo $rg['Pangkat'];?></td>
         <td>
         <a href="koreksigolongan.php?Golongan=<?php echo $rg['Golongan'];?>" target="frmmain" class="btn btn-success" title="Koreksi">🖊️</a>
-		<a href="hapusgolongan.php?Golongan=<?php echo $rg['Golongan'];?>" target="frmmain" class="btn btn-danger" title="Hapus" onclick="return confirm('Apakah yakin ingin dihapus?')" >🗑️</a>
+		<a href="hapusgolongan.php?Golongan=<?php echo $rg['Golongan'];?>" target="frmmain" class="btn btn-danger" title="Hapus" onclick="return confirm('Apakah yakin ingin dihapus?');">🗑️</a>
         </td>
       </tr>
       <?php

@@ -8,8 +8,12 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-  
-	<div class="container">
+  	<div class="container">
+	<h2>Master Tabel Unit</h2>
+	<?php
+	$berwenang=['7'];
+	include('ceklevelpengguna.php');
+	?>
 	<form method="post">
 	  <div class="form-group row">
 		<label for="namaunit" class="col-4 col-form-label">Nama Unit</label> 

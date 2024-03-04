@@ -12,6 +12,7 @@
     <head>
         <title>Surat Permohonaan Dinas Luar</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <style>
             table tr td{
@@ -146,6 +147,25 @@
                     </textarea>
                     </td>
                 </tr>
+        <tr>
+            <td width="55"></td>
+            <td style="font-size: 12px; font-family: time new romance;">Peserta : <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Tambah Peserta</button></td>
+            <td>
+                <ol>
+                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."'";
+                $qps=mysqli_query($koneksi,$sqlps);
+                $rps=mysqli_fetch_array($qps);
+                if (!empty($rps)) {
+                    do {
+                        echo "<li>".$rps['nama_lengkap'];
+                        echo '<a href="hapuspesertakegiatan.php?id_login='.$rps['id_login'].'&ns='.$r['IdSurat'].'" title="Hapus Peserta" onclick="return confirm(\'Apakah yakin peserta '.$rps['nama_lengkap'].' akan dihapus ?\')">🗑️</a>';
+                        echo "</li>";
+                    } while($rps=mysqli_fetch_array($qps));
+                }
+                ?>
+                </ol>
+            </td>
+        </tr>
                 <tr>
                     <td width="55"></td>
                     <td style="font-size: 12px; font-family: time new romance;">Alat Transportasi</td>
@@ -161,7 +181,61 @@
 			<button name="submit" type="submit" class="btn btn-primary">Submit</button>
 			</div>
 		</div>
+        <!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Tambah Peserta Kegiatan</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+      <form>
+      <input id="IdSurat" name="IdSurat" type="hidden" value="<?php echo $r['IdSurat']; ?>">
+  <div class="form-group row">
+    <label for="id_login" class="col-4 col-form-label">Pilih Peserta</label> 
+    <div class="col-8">
+      <select id="id_loginp" name="id_loginp" class="custom-select">
+        <?php 
+        $sqlpengguna="select * from pengguna where id_login not in (select id_login from pesertakegiatan where idSurat='".$r['IdSurat']."')";
+        $qpengguna=mysqli_query($koneksi,$sqlpengguna);
+        $rpengguna=mysqli_fetch_array($qpengguna);
+        do {
+        ?>
+        <option value="<?php echo $rpengguna['id_login'];?>"><?php echo $rpengguna['nama_lengkap'];?></option>
+        <?php }while($rpengguna=mysqli_fetch_array($qpengguna));
+        ?>
+      </select>
+    </div>
+  </div> 
+  <div class="form-group row">
+    <div class="offset-4 col-8">
+      <button name="btambahpeserta" type="submit" class="btn btn-primary">Tambahkan</button>
+    </div>
+  </div>
+</form>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 		<?php
+            if (isset($_POST['btambahpeserta'])) {
+                $id_loginp=filter_var($_POST['id_loginp'],FILTER_SANITIZE_STRING);
+                $sqlt="INSERT INTO `pesertakegiatan`(`idSurat`, `id_login`) VALUES ('".$r['IdSurat']."','".$id_loginp."')";
+                $qt=mysqli_query($koneksi,$sqlt);
+                if ($qt) {
+                    echo "<script>
+			alert('Peserta sudah ditambahkan'); window.location.href='formpermohonanisi.php?NomorSurat=".$r['NomorSurat']."';</script>";
+                }
+            }
 			if (isset($_POST['submit'])){
                 $NomorSurat=filter_var($_POST['NomorSurat'],FILTER_SANITIZE_STRING);
                 $IdSurat=filter_var($_POST['IdSurat'],FILTER_SANITIZE_STRING);

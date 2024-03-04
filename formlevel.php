@@ -10,6 +10,11 @@
 <body>
   
 	<div class="container">
+	<h2>Master Tabel Level</h2>
+	<?php
+	$berwenang=['7'];
+	include('ceklevelpengguna.php');
+	?>	
 	<form method="post">
 	  <div class="form-group row">
 		<label for="namalevel" class="col-4 col-form-label">Nama Level</label> 
