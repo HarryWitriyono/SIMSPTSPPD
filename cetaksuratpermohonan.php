@@ -137,7 +137,7 @@
             <td style="font-size: 12px; font-family: time new romance;" valign="top">Peserta : </td>
             <td>
                 <ol>
-                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."'";
+                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."' and p.idlevel <>'5'";
                 $qps=mysqli_query($koneksi,$sqlps);
                 $rps=mysqli_fetch_array($qps);
                 if (!empty($rps)) {
@@ -172,6 +172,57 @@
                     <td width="55"></td>
                     <td style="font-size: 12px; font-family: time new romance;">Alat Transportasi</td>
                     <td style="font-size: 12px; font-family: time new romance; width: 320px;" style="line-height:1.5;">: <?php echo $r['AlatAngkutan']; ?>
+                </tr>
+            </table>
+            <table width="612">
+                <tr>
+                    <td colspan="2" align="justify" style="font-size: 12px; font-family: time new romance; line-height:1.5;">
+                                
+                            <p style="text-align:justify; text-indent: 0.5in;">Berkenaan dengan hal tersebut, bersama ini dengan hormat agar Saudara berkenan untuk menerima dan diagendakan kegiatan dimaksud.
+                            </p> 
+                            <p style="text-align:justify; text-indent: 0.5in;">Demikian disampaikan atas kerjasamanya dihaturkan terima kasih.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan=2 align="center">DEWAN PERWAKILAN RAKYAT DAERAH<br>KOTA BENGKULU</td>
+                </tr>
+                <tr>
+                    <td width="50%">
+                        <ol>
+                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."' and p.idlevel <> 5";
+                $qps=mysqli_query($koneksi,$sqlps);
+                $rps=mysqli_fetch_array($qps);
+                if (!empty($rps)) {
+                    do {
+                        echo "<li>".$rps['nama_lengkap'];
+                        echo "</li>";
+                    } while($rps=mysqli_fetch_array($qps));
+                }
+                ?>
+                </ol>
+                    </td>
+                    <td align="right">
+                    <ol>
+                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."' and p.idlevel <> 5";
+                $qps=mysqli_query($koneksi,$sqlps);
+                $rps=mysqli_fetch_array($qps);
+                include('qrcode/qrlib.php');
+                if (!empty($rps)) {
+                    do {
+                        echo "<li>. &nbsp;";
+                        $filename=date('YmdHis').".png";
+                        $errorCorrectionLevel = 'H';
+                        $matrixPointSize = 1;
+                        $url="http://localhost/cetaksuratpermohonan.php?idSurat=".$NomorSurat;
+                        $chipertext=base64_encode($url);
+                        QRcode::png($chipertext, $filename, $errorCorrectionLevel, $matrixPointSize, 1);
+                        echo '<img src="'.$filename.'">';
+                        echo "</li>";
+                    } while($rps=mysqli_fetch_array($qps));
+                }
+                ?>
+                </ol>
+                    </td>    
                 </tr>
             </table>
 </body>
