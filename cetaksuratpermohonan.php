@@ -150,6 +150,24 @@
                 </ol>
             </td>
         </tr>
+        <tr>
+            <td width="55"></td>
+            <td style="font-size: 12px; font-family: time new romance;" valign="top">Pendamping : </td>
+            <td>
+                <ol>
+                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."' and p.idlevel='5'";
+                $qps=mysqli_query($koneksi,$sqlps);
+                $rps=mysqli_fetch_array($qps);
+                if (!empty($rps)) {
+                    do {
+                        echo "<li>".$rps['nama_lengkap'];
+                        echo "</li>";
+                    } while($rps=mysqli_fetch_array($qps));
+                }
+                ?>
+                </ol>
+            </td>
+        </tr>
                 <tr>
                     <td width="55"></td>
                     <td style="font-size: 12px; font-family: time new romance;">Alat Transportasi</td>

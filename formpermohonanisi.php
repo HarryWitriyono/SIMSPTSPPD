@@ -166,6 +166,25 @@
                 </ol>
             </td>
         </tr>
+        <tr>
+            <td width="55"></td>
+            <td style="font-size: 12px; font-family: time new romance;">Pendamping : <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal2">Tambah Pendamping</button></td>
+            <td>
+                <ol>
+                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."' and p.idlevel='5'";
+                $qps=mysqli_query($koneksi,$sqlps);
+                $rps=mysqli_fetch_array($qps);
+                if (!empty($rps)) {
+                    do {
+                        echo "<li>".$rps['nama_lengkap'];
+                        echo '<a href="hapuspendampingkegiatan.php?id_login='.$rps['id_login'].'&ns='.$r['IdSurat'].'" title="Hapus Pendamping" onclick="return confirm(\'Apakah yakin pendamping '.$rps['nama_lengkap'].' akan dihapus ?\')">🗑️</a>';
+                        echo "</li>";
+                    } while($rps=mysqli_fetch_array($qps));
+                }
+                ?>
+                </ol>
+            </td>
+        </tr>
                 <tr>
                     <td width="55"></td>
                     <td style="font-size: 12px; font-family: time new romance;">Alat Transportasi</td>
@@ -181,7 +200,7 @@
 			<button name="submit" type="submit" class="btn btn-primary">Submit</button>
 			</div>
 		</div>
-        <!-- The Modal -->
+<!-- The Modal Peserta-->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -226,7 +245,61 @@
     </div>
   </div>
 </div>
+<!-- The Modal Pendamping-->
+<div class="modal" id="myModal2">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Tambah Pendamping Kegiatan</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+      <form method="post">
+      <input id="IdSurat" name="IdSurat" type="hidden" value="<?php echo $r['IdSurat']; ?>">
+  <div class="form-group row">
+    <label for="id_login" class="col-4 col-form-label">Pilih Pendamping</label> 
+    <div class="col-8">
+      <select id="id_loginp" name="id_loginp" class="custom-select">
+        <?php 
+        $sqlpengguna="select * from pengguna where id_login not in (select id_login from pesertakegiatan where idSurat='".$r['IdSurat']."')  and idlevel='5'";
+        $qpengguna=mysqli_query($koneksi,$sqlpengguna);
+        $rpengguna=mysqli_fetch_array($qpengguna);
+        do {
+        ?>
+        <option value="<?php echo $rpengguna['id_login'];?>"><?php echo $rpengguna['nama_lengkap'];?></option>
+        <?php }while($rpengguna=mysqli_fetch_array($qpengguna));
+        ?>
+      </select>
+    </div>
+  </div> 
+  <div class="form-group row">
+    <div class="offset-4 col-8">
+      <button name="btambahpendamping" type="submit" class="btn btn-primary">Tambahkan</button>
+    </div>
+  </div>
+</form>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 		<?php
+            if (isset($_POST['btambahpendamping'])) {
+                $id_loginp=filter_var($_POST['id_loginp'],FILTER_SANITIZE_STRING);
+                $sqlt="INSERT INTO `pesertakegiatan`(`idSurat`, `id_login`) VALUES ('".$r['IdSurat']."','".$id_loginp."')";
+                $qt=mysqli_query($koneksi,$sqlt);
+                if ($qt) {
+                    echo "<script>
+			alert('Pendamping sudah ditambahkan'); window.location.href='formpermohonanisi.php?NomorSurat=".$r['NomorSurat']."';</script>";
+                }
+            }
             if (isset($_POST['btambahpeserta'])) {
                 $id_loginp=filter_var($_POST['id_loginp'],FILTER_SANITIZE_STRING);
                 $sqlt="INSERT INTO `pesertakegiatan`(`idSurat`, `id_login`) VALUES ('".$r['IdSurat']."','".$id_loginp."')";
