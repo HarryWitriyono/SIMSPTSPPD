@@ -1,4 +1,12 @@
-
+<?php
+		include('koneksi.db.php');
+		if (isset($_GET['idSurat'])){
+			$NomorSurat=filter_var($_GET['idSurat'],FILTER_SANITIZE_STRING);
+			$sql="SELECT * FROM `headersurat` WHERE idSurat='".$NomorSurat."'";
+			$q=mysqli_query($koneksi, $sql);
+			$r=mysqli_fetch_array($q);
+		} 
+			?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +25,7 @@
         <center>
             <table>
                 <tr>
-                    <td><img src="Logo.png" width="80" height="85"></td>
+                    <td><img src="images/Logo.png" width="80" height="85"></td>
                     <td>
                         <center>
                             <font size="5" style="font-family: time new romance;"><b>DEWAN PERWAKILAN RAKYAT DAERAH</b>
@@ -32,7 +40,7 @@
                 <tr>
                     <td colspan="2"><hr></td>
                 </tr>
-            </table>
+            </table><center>
             <table width="614">
                 <tr>
                     <td>
@@ -57,7 +65,21 @@
             </center>
 <p style="text-align: left;">
 2.	Kepada	: Nama / NIP / Jabatan<br>
-&emsp;&emsp;&emsp;&emsp;<textarea rows="10" cols="50" name="nama_peserta"></textarea>
+&emsp;&emsp;&emsp;&emsp;
+<table><tr><td>
+<ol>
+                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."' and p.idlevel <>'5'";
+                $qps=mysqli_query($koneksi,$sqlps);
+                $rps=mysqli_fetch_array($qps);
+                if (!empty($rps)) {
+                    do {
+                        echo "<li>".$rps['nama_lengkap'];
+                        echo "</li>";
+                    } while($rps=mysqli_fetch_array($qps));
+                }
+                ?>
+                </ol>
+            </td></tr></table>                
 <br>
 3.	Untuk 		:<br>
 &emsp;&emsp;&emsp;&emsp;<textarea rows="5" cols="30" name="kepada"></textarea><br><br>
