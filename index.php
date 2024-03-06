@@ -135,8 +135,8 @@ exit();
 									<a class="nav-link" href="vanggota.php" target="frmmain">validasi anggota</a>
 									<a class="nav-link" href="vaketua.php" target="frmmain">validasi ketua</a>
 									<a class="nav-link" href="vasekwan.php" target="frmmain">validasi sekwan</a>
-									<a class="nav-link" href="vapendamping.php" target="frmmain">validasi pendamping</a>								
-									<a class="nav-link" href="vakabag.php" target="frmmain">validasi kabag</a>									
+									<!--a class="nav-link" href="vapendamping.php" target="frmmain">validasi pendamping</a-->								
+									<a class="nav-link" href="vakabag.php" target="frmmain">validasi Kabag</a>									
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts">

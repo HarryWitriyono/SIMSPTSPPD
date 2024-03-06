@@ -152,7 +152,7 @@
             <td style="font-size: 12px; font-family: time new romance;">Peserta : <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Tambah Peserta</button></td>
             <td>
                 <ol>
-                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."'";
+                <?php $sqlps="select ps.*,p.nama_lengkap from pesertakegiatan ps inner join pengguna p ON ps.id_login = p.id_login where ps.idSurat='".$r['IdSurat']."' and p.idlevel !='5'";
                 $qps=mysqli_query($koneksi,$sqlps);
                 $rps=mysqli_fetch_array($qps);
                 if (!empty($rps)) {
@@ -177,7 +177,7 @@
                 if (!empty($rps)) {
                     do {
                         echo "<li>".$rps['nama_lengkap'];
-                        echo '<a href="hapuspendampingkegiatan.php?id_login='.$rps['id_login'].'&ns='.$r['IdSurat'].'" title="Hapus Pendamping" onclick="return confirm(\'Apakah yakin pendamping '.$rps['nama_lengkap'].' akan dihapus ?\')">🗑️</a>';
+                        echo '<a href="hapuspesertakegiatan.php?id_login='.$rps['id_login'].'&ns='.$r['IdSurat'].'" title="Hapus Pendamping" onclick="return confirm(\'Apakah yakin pendamping '.$rps['nama_lengkap'].' akan dihapus ?\')">🗑️</a>';
                         echo "</li>";
                     } while($rps=mysqli_fetch_array($qps));
                 }
@@ -205,7 +205,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
 
-      <!-- Modal Header -->
+      <!-- Modal Header Pilih Peserta -->
       <div class="modal-header">
         <h4 class="modal-title">Tambah Peserta Kegiatan</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -220,7 +220,7 @@
     <div class="col-8">
       <select id="id_loginp" name="id_loginp" class="custom-select">
         <?php 
-        $sqlpengguna="select * from pengguna where id_login not in (select id_login from pesertakegiatan where idSurat='".$r['IdSurat']."')";
+        $sqlpengguna="select * from pengguna where id_login not in (select id_login from pesertakegiatan where idSurat='".$r['IdSurat']."' and idlevel !='5') and idlevel != '5'";
         $qpengguna=mysqli_query($koneksi,$sqlpengguna);
         $rpengguna=mysqli_fetch_array($qpengguna);
         do {
@@ -265,13 +265,16 @@
     <div class="col-8">
       <select id="id_loginp" name="id_loginp" class="custom-select">
         <?php 
-        $sqlpengguna="select * from pengguna where id_login not in (select id_login from pesertakegiatan where idSurat='".$r['IdSurat']."')  and idlevel='5'";
+        $sqlpengguna="select * from pengguna where id_login not in (select id_login from pesertakegiatan where idSurat='".$r['IdSurat']."' and idlevel='5') and idlevel = '5'";
         $qpengguna=mysqli_query($koneksi,$sqlpengguna);
         $rpengguna=mysqli_fetch_array($qpengguna);
+        if (empty($rpengguna)) {
+            echo '<option>Tidak ada pendamping lagi</option>';
+        } else { 
         do {
         ?>
         <option value="<?php echo $rpengguna['id_login'];?>"><?php echo $rpengguna['nama_lengkap'];?></option>
-        <?php }while($rpengguna=mysqli_fetch_array($qpengguna));
+        <?php }while($rpengguna=mysqli_fetch_array($qpengguna)); };
         ?>
       </select>
     </div>
